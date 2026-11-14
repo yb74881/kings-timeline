@@ -26,7 +26,7 @@ nav{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 24px}.navbtn,.filterbtn{bo
 .modal{position:fixed;inset:0;background:#10182799;display:none;align-items:center;justify-content:center;padding:18px;z-index:5}.modal.show{display:flex}.modal-box{background:#fff;border-radius:20px;max-width:620px;width:100%;max-height:88vh;overflow:auto;padding:24px;box-shadow:0 25px 80px #0004}.modal-head{display:flex;justify-content:space-between;gap:12px}.close{border:0;background:#eef1f6;border-radius:10px;width:34px;height:34px;font-size:20px;cursor:pointer}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}.detail{background:#f5f7fa;padding:12px;border-radius:12px}.detail small{display:block;color:var(--muted);font-size:11px}.detail b{font-size:14px}.modal-box p{color:#536078}.refs{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
 footer{margin:28px 0 8px;color:#8791a2;font-size:11px;text-align:center}
 
-.timeline-panel{overflow:hidden}.timeline-scroll{overflow-x:auto;padding:8px 2px 14px}
+.timeline-panel{overflow:hidden}.timeline-scroll{overflow-x:auto;overflow-y:hidden;padding:8px 2px 14px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:auto;scrollbar-width:thin}
 .ruler-chart{min-width:940px;position:relative}
 .ruler-axis{display:grid;grid-template-columns:170px 1fr;align-items:end;margin-bottom:8px}
 .axis-label{font-size:11px;color:#8490a4;font-weight:800;padding:0 8px 8px}
@@ -64,7 +64,7 @@ footer{margin:28px 0 8px;color:#8791a2;font-size:11px;text-align:center}
 @media(max-width:650px){.power-grid{grid-template-columns:1fr}}
 
 
-.timeline-scroll{position:relative;touch-action:pan-y}
+.timeline-scroll{position:relative;touch-action:auto}
 .ruler-chart{position:relative}
 .timeline-crosshair{position:absolute;top:0;bottom:0;width:2px;background:#d39b36;z-index:8;pointer-events:none;box-shadow:0 0 0 1px #ffffff80}
 .timeline-crosshair:before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:#d39b36;border:2px solid white;box-shadow:0 1px 5px #17243b40}
@@ -85,6 +85,13 @@ footer{margin:28px 0 8px;color:#8791a2;font-size:11px;text-align:center}
 .readout-item b{display:block;font-size:13px;color:#202b40}
 .readout-event{grid-column:1/-1;font-size:12px;line-height:1.55;color:#59667d;padding-top:2px}
 @media(max-width:650px){.timeline-readout{grid-template-columns:1fr}.readout-columns{grid-template-columns:1fr}.readout-date{font-size:16px}}
+
+
+.mobile-timeline-hint{display:none;margin:2px 2px 8px;font-size:11px;color:#7c879b}
+@media(max-width:700px){
+ .mobile-timeline-hint{display:block}
+ .timeline-scroll{touch-action:pan-x pan-y;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+}
 
 @media(max-width:850px){.king-grid{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(2,1fr)}.prophets{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.shell{padding:13px}header{padding:23px 20px}.split,.event-list{grid-template-columns:1fr}.king-grid{grid-template-columns:1fr}.prophets{grid-template-columns:1fr}.section-head{display:block}.timeline{grid-template-columns:1fr;gap:4px}.track{min-height:43px}.detail-grid{grid-template-columns:1fr 1fr}}
@@ -147,6 +154,7 @@ footer{margin:28px 0 8px;color:#8791a2;font-size:11px;text-align:center}
   <div class="legend"><span class="tag judah-tag">남유다</span><span class="tag israel-tag">북이스라엘</span><span class="tag" style="background:#f2eaff;color:#7041a6">선지자 활동 시기</span></div>
   <div class="timeline-scroll" id="timelineScroll">
    <div id="rulerChart" class="ruler-chart" aria-label="남유다와 북이스라엘 왕들의 재위 타임라인"></div>
+  <p class="mobile-timeline-hint">모바일에서는 타임라인을 손가락으로 좌우로 밀어 시대를 탐색할 수 있어요.</p>
   </div>
   <p style="font-size:12px;color:#788398;margin:15px 0 0">※ 연대는 대표적인 역사 연대에 따른 개략값입니다. 공동 통치, 즉위 연도 계산법, 경쟁 왕권 및 학자별 연대 체계에 따라 차이가 있습니다. 특히 북이스라엘 말기와 남유다의 공동 통치 구간은 막대가 겹칠 수 있습니다.</p>
  </div>
@@ -436,6 +444,26 @@ timelineScroll.addEventListener('pointermove',e=>{
  updateEra(e.clientX,e.clientY);
 });
 timelineScroll.addEventListener('pointerleave',()=>{crosshair.style.display='none';hovercard.hidden=true});
+
+// Mobile: keep native horizontal swipe scrolling enabled and track the finger position.
+function updateFromTouch(event){
+ const touch=event.touches && event.touches[0];
+ if(!touch) return;
+ const axis=chart.querySelector('.axis-track');
+ const rect=axis.getBoundingClientRect();
+ if(touch.clientX<rect.left || touch.clientX>rect.right){
+  crosshair.style.display='none';
+  hovercard.hidden=true;
+  return;
+ }
+ updateEra(touch.clientX,touch.clientY);
+}
+timelineScroll.addEventListener('touchstart',updateFromTouch,{passive:true});
+timelineScroll.addEventListener('touchmove',updateFromTouch,{passive:true});
+timelineScroll.addEventListener('touchend',()=>{
+ // Keep the last selected year visible briefly; the next touch will update it.
+}, {passive:true});
+
 
 chart.querySelectorAll('[data-king]').forEach(btn=>btn.addEventListener('click',()=>openKing(btn.dataset.king)));
 
