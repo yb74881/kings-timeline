@@ -90,7 +90,7 @@ footer{margin:28px 0 8px;color:#8791a2;font-size:11px;text-align:center}
 .mobile-timeline-hint{display:none;margin:2px 2px 8px;font-size:11px;color:#7c879b}
 @media(max-width:700px){
  .mobile-timeline-hint{display:block}
- .timeline-scroll{touch-action:pan-x pan-y;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+ .timeline-scroll{touch-action:none;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 }
 
 @media(max-width:850px){.king-grid{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(2,1fr)}.prophets{grid-template-columns:repeat(2,1fr)}}
@@ -154,7 +154,7 @@ footer{margin:28px 0 8px;color:#8791a2;font-size:11px;text-align:center}
   <div class="legend"><span class="tag judah-tag">남유다</span><span class="tag israel-tag">북이스라엘</span><span class="tag" style="background:#f2eaff;color:#7041a6">선지자 활동 시기</span></div>
   <div class="timeline-scroll" id="timelineScroll">
    <div id="rulerChart" class="ruler-chart" aria-label="남유다와 북이스라엘 왕들의 재위 타임라인"></div>
-  <p class="mobile-timeline-hint">모바일에서는 타임라인을 손가락으로 좌우로 밀어 시대를 탐색할 수 있어요.</p>
+  <p class="mobile-timeline-hint">모바일: 한 손가락은 시대 탐색, 두 손가락은 타임라인 이동</p>
   </div>
   <p style="font-size:12px;color:#788398;margin:15px 0 0">※ 연대는 대표적인 역사 연대에 따른 개략값입니다. 공동 통치, 즉위 연도 계산법, 경쟁 왕권 및 학자별 연대 체계에 따라 차이가 있습니다. 특히 북이스라엘 말기와 남유다의 공동 통치 구간은 막대가 겹칠 수 있습니다.</p>
  </div>
@@ -438,6 +438,7 @@ function updateEra(clientX,clientY){
  hovercard.style.top=top+'px';
 }
 timelineScroll.addEventListener('pointermove',e=>{
+ if(e.pointerType!=='mouse') return;
  const axis=chart.querySelector('.axis-track');
  const rect=axis.getBoundingClientRect();
  if(e.clientX<rect.left || e.clientX>rect.right){crosshair.style.display='none';return}
@@ -445,24 +446,85 @@ timelineScroll.addEventListener('pointermove',e=>{
 });
 timelineScroll.addEventListener('pointerleave',()=>{crosshair.style.display='none';hovercard.hidden=true});
 
-// Mobile: keep native horizontal swipe scrolling enabled and track the finger position.
-function updateFromTouch(event){
- const touch=event.touches && event.touches[0];
- if(!touch) return;
- const axis=chart.querySelector('.axis-track');
- const rect=axis.getBoundingClientRect();
- if(touch.clientX<rect.left || touch.clientX>rect.right){
+// Mobile gesture model:
+// 1 finger = move the era cursor; 2 fingers = pan the timeline horizontally.
+let touchMode=null;
+let lastTwoFingerCenter=null;
+function getTouchCenter(touches){
+ return {
+  x:(touches[0].clientX+touches[1].clientX)/2,
+  y:(touches[0].clientY+touches[1].clientY)/2
+ };
+}
+timelineScroll.style.touchAction='none';
+timelineScroll.addEventListener('touchstart',event=>{
+ if(event.touches.length===1){
+  touchMode='cursor';
+  lastTwoFingerCenter=null;
+  event.preventDefault();
+  const t=event.touches[0];
+  const axis=chart.querySelector('.axis-track');
+  const rect=axis.getBoundingClientRect();
+  if(t.clientX>=rect.left && t.clientX<=rect.right) updateEra(t.clientX,t.clientY);
+ }else if(event.touches.length>=2){
+  touchMode='pan';
+  lastTwoFingerCenter=getTouchCenter(event.touches);
   crosshair.style.display='none';
   hovercard.hidden=true;
-  return;
+  event.preventDefault();
  }
- updateEra(touch.clientX,touch.clientY);
+},{passive:false});
+timelineScroll.addEventListener('touchmove',event=>{
+ if(event.touches.length>=2){
+  if(touchMode!=='pan'){
+   touchMode='pan';
+   lastTwoFingerCenter=getTouchCenter(event.touches);
+  }
+  const center=getTouchCenter(event.touches);
+  if(lastTwoFingerCenter){
+   const dx=center.x-lastTwoFingerCenter.x;
+   const dy=center.y-lastTwoFingerCenter.y;
+   // Horizontal two-finger movement pans the wide chart.
+   if(Math.abs(dx)>=Math.abs(dy)){
+    timelineScroll.scrollLeft-=dx;
+   }else{
+    // Vertical two-finger movement scrolls the page.
+    window.scrollBy(0,-dy);
+   }
+  }
+  lastTwoFingerCenter=center;
+  event.preventDefault();
+ }else if(event.touches.length===1 && touchMode==='cursor'){
+  const t=event.touches[0];
+  const axis=chart.querySelector('.axis-track');
+  const rect=axis.getBoundingClientRect();
+  if(t.clientX>=rect.left && t.clientX<=rect.right){
+   updateEra(t.clientX,t.clientY);
+  }else{
+   crosshair.style.display='none';
+   hovercard.hidden=true;
+  }
+  event.preventDefault();
+ }
+},{passive:false});
+function resetTouchMode(){
+ touchMode=null;
+ lastTwoFingerCenter=null;
 }
-timelineScroll.addEventListener('touchstart',updateFromTouch,{passive:true});
-timelineScroll.addEventListener('touchmove',updateFromTouch,{passive:true});
-timelineScroll.addEventListener('touchend',()=>{
- // Keep the last selected year visible briefly; the next touch will update it.
-}, {passive:true});
+timelineScroll.addEventListener('touchend',event=>{
+ if(event.touches.length===1){
+  // If one finger remains after a two-finger pan, continue in cursor mode.
+  touchMode='cursor';
+  lastTwoFingerCenter=null;
+  const t=event.touches[0];
+  const axis=chart.querySelector('.axis-track');
+  const rect=axis.getBoundingClientRect();
+  if(t.clientX>=rect.left && t.clientX<=rect.right) updateEra(t.clientX,t.clientY);
+ }else if(event.touches.length===0){
+  resetTouchMode();
+ }
+},{passive:true});
+timelineScroll.addEventListener('touchcancel',resetTouchMode,{passive:true});
 
 
 chart.querySelectorAll('[data-king]').forEach(btn=>btn.addEventListener('click',()=>openKing(btn.dataset.king)));
