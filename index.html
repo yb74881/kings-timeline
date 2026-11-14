@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bible Timeline | 이스라엘 왕국의 역사</title>
+<style>
+:root{--bg:#f5f6fa;--paper:#fff;--ink:#182235;--muted:#718096;--line:#e5e9f0;--blue:#3158d8;--blue2:#eaf0ff;--teal:#087f78;--teal2:#e5f5f2;--gold:#b7791f;--red:#c2414b;--green:#18845b;--shadow:0 10px 30px rgba(25,40,70,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+a{color:inherit}.shell{max-width:1240px;margin:auto;padding:24px}
+header{background:#121d31;color:#fff;border-radius:24px;padding:30px 34px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+header:after{content:"";position:absolute;width:340px;height:340px;border:1px solid #ffffff22;border-radius:50%;right:-90px;top:-180px;box-shadow:0 0 0 35px #ffffff08,0 0 0 75px #ffffff06}
+.eyebrow{font-size:11px;letter-spacing:.18em;color:#b9c8e8;font-weight:800}.brand{display:flex;gap:10px;align-items:center;font-weight:800;letter-spacing:.08em;font-size:13px}.brandmark{width:30px;height:30px;border-radius:9px;background:#d7b66c;color:#172137;display:grid;place-items:center}
+h1{font-size:clamp(30px,5vw,48px);line-height:1.12;margin:24px 0 10px;letter-spacing:-.04em}.hero-sub{color:#c4cee0;max-width:650px;margin:0}.hero-bottom{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}.pill{border:1px solid #ffffff30;color:#e6edf9;border-radius:99px;padding:7px 12px;font-size:12px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 24px}.navbtn,.filterbtn{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 14px;color:#43516a;font-weight:700;cursor:pointer}.navbtn.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.section{display:none}.section.active{display:block}.section-head{display:flex;justify-content:space-between;gap:18px;align-items:end;margin:24px 0 16px}.section-head h2{font-size:24px;letter-spacing:-.03em;margin:0}.section-head p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}.stat,.panel,.king-card{background:var(--paper);border:1px solid var(--line);border-radius:17px;box-shadow:0 3px 12px #1d2b4405}.stat{padding:16px}.stat strong{display:block;font-size:25px;letter-spacing:-.04em}.stat span{font-size:12px;color:var(--muted)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}.panel{padding:19px}.panel h3{margin:0 0 12px;font-size:16px}.kingdom{padding:18px;border-radius:15px;color:#fff;min-height:130px}.kingdom.judah{background:linear-gradient(135deg,#274dc2,#5279e7)}.kingdom.israel{background:linear-gradient(135deg,#08736e,#20a59a)}.kingdom .big{font-size:27px;font-weight:800;letter-spacing:-.04em}.kingdom small{opacity:.85}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.tag{display:inline-flex;align-items:center;gap:5px;border-radius:99px;padding:4px 8px;font-size:11px;font-weight:800;white-space:nowrap}.good{background:#e4f5ed;color:#14744e}.mixed{background:#fff3d8;color:#94600d}.bad{background:#fde9e9;color:#ae333c}.neutral{background:#edf0f5;color:#5d687b}.judah-tag{background:#eaf0ff;color:#3158d8}.israel-tag{background:#e3f5f2;color:#087f78}
+.controls{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0}.search{flex:1;min-width:210px;border:1px solid var(--line);border-radius:12px;padding:11px 13px;font:inherit;background:#fff}.filterbtn.active{background:var(--blue2);color:var(--blue);border-color:#cbd8ff}
+.king-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.king-card{padding:15px;cursor:pointer;transition:.18s}.king-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:#c9d4eb}.card-top{display:flex;justify-content:space-between;gap:8px;align-items:start}.king-card h3{font-size:17px;margin:8px 0 2px}.king-card .meta{color:var(--muted);font-size:12px}.king-card p{font-size:13px;color:#536078;margin:10px 0 0}.card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}
+.timeline{display:grid;grid-template-columns:90px 1fr;gap:12px;margin:13px 0}.timeline-label{font-weight:800;font-size:12px;padding-top:9px}.track{display:flex;gap:4px;min-height:48px;align-items:stretch}.era{border-radius:9px;padding:7px 9px;color:#fff;font-size:11px;min-width:0;display:flex;flex-direction:column;justify-content:center;overflow:hidden}.era b{font-size:12px}.era.j{background:#3158d8}.era.i{background:#07857c}.era.neutral-era{background:#68758a}
+.tree{display:flex;flex-direction:column;align-items:center;gap:8px}.node{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 14px;text-align:center;min-width:180px;box-shadow:0 3px 12px #1d2b4406}.node b{display:block}.node small{color:var(--muted)}.down{color:#9aa5b6;font-size:20px;line-height:1}.branches{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}.branch{display:flex;flex-direction:column;align-items:center;gap:7px}
+.event-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.event{padding:16px;border:1px solid var(--line);border-radius:15px;background:#fff}.event time{font-size:11px;color:var(--blue);font-weight:900;letter-spacing:.06em}.event h3{margin:5px 0;font-size:15px}.event p{margin:0;color:#667188;font-size:13px}
+.prophets{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.prophet{padding:16px;background:#fff;border:1px solid var(--line);border-radius:15px}.prophet h3{margin:0 0 5px}.prophet p{font-size:13px;color:#667188;margin:0}.prophet small{color:var(--blue);font-weight:800}
+.modal{position:fixed;inset:0;background:#10182799;display:none;align-items:center;justify-content:center;padding:18px;z-index:5}.modal.show{display:flex}.modal-box{background:#fff;border-radius:20px;max-width:620px;width:100%;max-height:88vh;overflow:auto;padding:24px;box-shadow:0 25px 80px #0004}.modal-head{display:flex;justify-content:space-between;gap:12px}.close{border:0;background:#eef1f6;border-radius:10px;width:34px;height:34px;font-size:20px;cursor:pointer}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}.detail{background:#f5f7fa;padding:12px;border-radius:12px}.detail small{display:block;color:var(--muted);font-size:11px}.detail b{font-size:14px}.modal-box p{color:#536078}.refs{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+footer{margin:28px 0 8px;color:#8791a2;font-size:11px;text-align:center}
+
+.timeline-panel{overflow:hidden}.timeline-scroll{overflow-x:auto;padding:8px 2px 14px}
+.ruler-chart{min-width:940px;position:relative}
+.ruler-axis{display:grid;grid-template-columns:170px 1fr;align-items:end;margin-bottom:8px}
+.axis-label{font-size:11px;color:#8490a4;font-weight:800;padding:0 8px 8px}
+.axis-track{height:35px;position:relative;border-bottom:1px solid #dce2ec}
+.axis-tick{position:absolute;bottom:0;height:100%;border-left:1px solid #e6eaf1;padding:3px 0 0 5px;font-size:10px;color:#8792a5}
+.axis-tick:first-child{border-left:0}
+.kingdom-band{display:grid;grid-template-columns:170px 1fr;align-items:center;margin:12px 0 4px}
+.band-title{font-size:13px;font-weight:900;padding:9px 10px;border-radius:10px;margin-right:10px}
+.band-title.j{background:#eaf0ff;color:#3158d8}.band-title.i{background:#e3f5f2;color:#087f78}
+.king-row{display:grid;grid-template-columns:170px 1fr;min-height:25px;align-items:center}
+.king-label{font-size:10px;color:#647188;padding:2px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.king-track{height:25px;position:relative;border-bottom:1px solid #f0f2f6;background:repeating-linear-gradient(to right,transparent 0,transparent calc(10% - 1px),#f0f2f6 calc(10% - 1px),#f0f2f6 10%)}
+.king-bar{position:absolute;top:3px;height:19px;border:0;border-radius:5px;color:#fff;font-size:10px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:1px 6px;cursor:pointer;min-width:4px;text-align:left;box-shadow:0 1px 3px #17243b20}
+.king-bar.j{background:linear-gradient(90deg,#3158d8,#6686e9)}.king-bar.i{background:linear-gradient(90deg,#087f78,#27a79d)}
+.king-bar:hover,.king-bar:focus{outline:2px solid #182235;outline-offset:2px;z-index:2}
+.prophet-band{display:grid;grid-template-columns:170px 1fr;align-items:center;margin:18px 0 4px}
+.prophet-band .band-title{background:#f2eaff;color:#7041a6}
+.prophet-row{display:grid;grid-template-columns:170px 1fr;min-height:27px;align-items:center}
+.prophet-track{height:27px;position:relative;border-bottom:1px solid #f0edf5;background:repeating-linear-gradient(to right,transparent 0,transparent calc(10% - 1px),#f0edf5 calc(10% - 1px),#f0edf5 10%)}
+.prophet-bar{position:absolute;top:4px;height:19px;border-radius:5px;background:#8c64b5;color:white;font-size:10px;font-weight:800;padding:1px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:600px){.timeline-panel{padding:12px}.ruler-chart{min-width:900px}}
+
+@media(max-width:850px){.king-grid{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(2,1fr)}.prophets{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.shell{padding:13px}header{padding:23px 20px}.split,.event-list{grid-template-columns:1fr}.king-grid{grid-template-columns:1fr}.prophets{grid-template-columns:1fr}.section-head{display:block}.timeline{grid-template-columns:1fr;gap:4px}.track{min-height:43px}.detail-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header>
+ <div class="brand"><span class="brandmark">✦</span> BIBLE TIMELINE <span style="color:#aab8d2;font-weight:500">/ SCRIPTURE HISTORY</span></div>
+ <div class="eyebrow" style="margin-top:28px">OLD TESTAMENT · 1–2 KINGS</div>
+ <h1>이스라엘 왕국의<br>역사를 한눈에</h1>
+ <p class="hero-sub">왕들의 계보와 통치, 선지자들의 사역, 그리고 두 왕국의 흥망성쇠를 하나의 흐름으로 살펴봅니다.</p>
+ <div class="hero-bottom"><span class="pill">남유다 · 예루살렘</span><span class="pill">북이스라엘 · 사마리아</span><span class="pill">BC 약 930–586</span></div>
+</header>
+<nav>
+ <button class="navbtn active" data-tab="overview">개요</button>
+ <button class="navbtn" data-tab="kings">왕 39명</button>
+ <button class="navbtn" data-tab="timeline">동시대 타임라인</button>
+ <button class="navbtn" data-tab="genealogy">왕조 계보</button>
+ <button class="navbtn" data-tab="prophets">선지자</button>
+ <button class="navbtn" data-tab="events">역사적 사건</button>
+</nav>
+
+<section id="overview" class="section active">
+ <div class="section-head"><div><h2>분열 왕국의 시작</h2><p>솔로몬 사후 하나의 왕국은 남유다와 북이스라엘로 나뉩니다.</p></div></div>
+ <div class="stats">
+  <div class="stat"><strong>39명</strong><span>분열 왕국의 왕 (남유다 20 · 북이스라엘 19)</span></div>
+  <div class="stat"><strong>2개</strong><span>분열된 왕국</span></div>
+  <div class="stat"><strong>722 BC</strong><span>북이스라엘 멸망</span></div>
+  <div class="stat"><strong>586 BC</strong><span>남유다 멸망</span></div>
+ </div>
+ <div class="split">
+  <div class="kingdom judah"><small>THE SOUTHERN KINGDOM</small><div class="big">남유다</div><div>다윗 왕조 · 예루살렘</div><small>르호보암부터 시드기야까지</small></div>
+  <div class="kingdom israel"><small>THE NORTHERN KINGDOM</small><div class="big">북이스라엘</div><div>여러 왕조 · 사마리아</div><small>여로보암 1세부터 호세아까지</small></div>
+ </div>
+ <div class="panel" style="margin-top:14px">
+  <h3>왕에 대한 성경의 평가</h3>
+  <div class="legend"><span class="tag good">● 하나님 보시기에 선함</span><span class="tag mixed">● 부분적·혼합 평가</span><span class="tag bad">● 하나님 보시기에 악함</span><span class="tag neutral">● 평가 유보 / 특이 사례</span></div>
+  <p style="font-size:13px;color:#667188;margin:0">이 평가는 성경이 왕의 통치와 여호와에 대한 충성을 어떻게 묘사하는지 요약한 것입니다. 왕의 모든 행동을 단순한 점수로 환산한 것은 아닙니다. 북이스라엘 왕들은 열왕기에서 대체로 여로보암의 죄를 따랐다는 평가를 받습니다.</p>
+ </div>
+</section>
+
+<section id="kings" class="section">
+ <div class="section-head"><div><h2>왕 39명 찾아보기</h2><p>왕을 선택하면 재위 기간, 주요 사건, 최후와 성경 본문을 볼 수 있습니다.</p></div></div>
+ <div class="controls">
+  <input id="search" class="search" placeholder="왕 이름 또는 사건 검색…">
+  <button class="filterbtn active" data-filter="all">전체</button>
+  <button class="filterbtn" data-filter="judah">남유다</button>
+  <button class="filterbtn" data-filter="israel">북이스라엘</button>
+  <button class="filterbtn" data-filter="good">선한 왕</button>
+  <button class="filterbtn" data-filter="bad">악한 왕</button>
+ </div>
+ <div id="kingGrid" class="king-grid"></div>
+</section>
+
+<section id="timeline" class="section">
+ <div class="section-head"><div><h2>두 왕국의 동시대 타임라인</h2><p>왕들의 재위 기간을 하나의 BC 시간축에 겹쳐 표시합니다. 막대를 선택하면 왕의 상세 정보가 열립니다.</p></div></div>
+ <div class="panel timeline-panel">
+  <div class="legend"><span class="tag judah-tag">남유다</span><span class="tag israel-tag">북이스라엘</span><span class="tag" style="background:#f2eaff;color:#7041a6">선지자 활동 시기</span></div>
+  <div class="timeline-scroll">
+   <div id="rulerChart" class="ruler-chart" aria-label="남유다와 북이스라엘 왕들의 재위 타임라인"></div>
+  </div>
+  <p style="font-size:12px;color:#788398;margin:15px 0 0">※ 연대는 대표적인 역사 연대에 따른 개략값입니다. 공동 통치, 즉위 연도 계산법, 경쟁 왕권 및 학자별 연대 체계에 따라 차이가 있습니다. 특히 북이스라엘 말기와 남유다의 공동 통치 구간은 막대가 겹칠 수 있습니다.</p>
+ </div>
+</section>
+
+<section id="genealogy" class="section">
+ <div class="section-head"><div><h2>왕조와 가족관계</h2><p>남유다는 다윗 왕조가 이어졌고, 북이스라엘은 여러 왕조가 교체되었습니다.</p></div></div>
+ <div class="split">
+  <div class="panel">
+   <h3><span class="tag judah-tag">남유다</span> 다윗 왕조</h3>
+   <div class="tree">
+    <div class="node"><b>솔로몬</b><small>통일 왕국의 마지막 왕</small></div><div class="down">↓</div>
+    <div class="node"><b>르호보암</b><small>분열 후 남유다 첫 왕</small></div><div class="down">↓</div>
+    <div class="node"><b>아비얌 → 아사 → 여호사밧</b><small>왕위 계승</small></div><div class="down">↓</div>
+    <div class="node"><b>여호람 + 아달랴</b><small>아달랴는 아합과 이세벨의 딸</small></div><div class="down">↓</div>
+    <div class="node"><b>아하시야</b><small>아합 왕가의 외손자</small></div><div class="down">↓</div>
+    <div class="node"><b>아달랴의 6년 통치</b><small>왕족을 제거하고 왕위 장악</small></div><div class="down">↓</div>
+    <div class="node"><b>요아스 → 아마샤 → 웃시야 → 요담 → 아하스 → 히스기야</b></div><div class="down">↓</div>
+    <div class="node"><b>므낫세 → 아몬 → 요시야</b></div><div class="down">↓</div>
+    <div class="node"><b>여호아하스 · 여호야김</b><small>요시야의 아들들</small></div><div class="down">↓</div>
+    <div class="node"><b>여호야긴 · 시드기야</b><small>여호야긴은 여호야김의 아들, 시드기야는 여호야긴의 삼촌</small></div>
+   </div>
+  </div>
+  <div class="panel">
+   <h3><span class="tag israel-tag">북이스라엘</span> 여러 왕조</h3>
+   <div class="tree">
+    <div class="node"><b>여로보암 1세 → 나답</b><small>여로보암 왕조</small></div><div class="down">↓</div>
+    <div class="node"><b>바아사 → 엘라</b><small>바아사 왕조</small></div><div class="down">↓</div>
+    <div class="node"><b>시므리 → 오므리</b><small>왕권 다툼 후 오므리 왕조</small></div><div class="down">↓</div>
+    <div class="node"><b>아합 → 아하시야 → 여호람</b><small>아합 왕조 · 이세벨의 아들들</small></div><div class="down">↓</div>
+    <div class="node"><b>예후 → 여호아하스 → 요아스</b><small>예후 왕조</small></div><div class="down">↓</div>
+    <div class="node"><b>여로보암 2세 → 스가랴</b><small>예후 왕조의 마지막</small></div><div class="down">↓</div>
+    <div class="node"><b>살룸 → 므나헴 → 브가히야</b><small>짧은 왕조 교체와 암살</small></div><div class="down">↓</div>
+    <div class="node"><b>베가 → 호세아</b><small>북이스라엘 마지막 왕</small></div>
+   </div>
+  </div>
+ </div>
+ <div class="panel" style="margin-top:14px"><h3>두 왕국을 연결한 혼인 관계</h3><p style="margin:0;color:#59667c;font-size:13px"><b>아합 + 이세벨</b>의 딸 아달랴가 남유다 왕 여호람과 결혼했습니다. 이들의 아들 아하시야는 북이스라엘 아합 가문의 외손자이기도 합니다. 이 혼인 관계 때문에 아합 왕조의 영향력이 남유다 왕실까지 들어왔습니다. (왕하 8:18, 26)</p></div>
+</section>
+
+<section id="prophets" class="section">
+ <div class="section-head"><div><h2>왕들과 함께 활동한 선지자</h2><p>선지자는 왕권을 보좌하는 인물이 아니라 하나님의 말씀으로 왕과 백성을 책망하고 인도한 인물입니다.</p></div></div>
+ <div class="prophets">
+  <div class="prophet"><small>북이스라엘 · 아합 시대</small><h3>엘리야</h3><p>갈멜산에서 바알 선지자들과 대결하고 아합과 이세벨을 책망했습니다.</p></div>
+  <div class="prophet"><small>북이스라엘 · 아합 이후</small><h3>엘리사</h3><p>엘리야의 사역을 계승해 여러 왕의 시대에 활동하며 기적과 예언을 행했습니다.</p></div>
+  <div class="prophet"><small>남유다 · 웃시야~히스기야 시대</small><h3>이사야</h3><p>유다의 왕들에게 하나님의 심판과 구원을 선포했습니다.</p></div>
+  <div class="prophet"><small>남유다 · 요시야~멸망 이후</small><h3>예레미야</h3><p>유다의 멸망을 경고하고 바벨론에 항복할 것을 전했습니다.</p></div>
+  <div class="prophet"><small>북이스라엘 · 여로보암 2세 시대</small><h3>아모스</h3><p>사회적 불의와 형식적인 종교를 책망했습니다.</p></div>
+  <div class="prophet"><small>북이스라엘 · 왕국 말기</small><h3>호세아</h3><p>이스라엘의 배신과 하나님의 변함없는 사랑을 선포했습니다.</p></div>
+  <div class="prophet"><small>남유다 · 아사 시대</small><h3>아사랴</h3><p>아사 왕에게 하나님을 찾으라고 권면했습니다. (대하 15장)</p></div>
+  <div class="prophet"><small>남유다 · 여호사밧 시대</small><h3>야하시엘</h3><p>연합군의 침공 앞에서 하나님이 유다를 위해 싸우실 것이라고 선포했습니다. (대하 20장)</p></div>
+  <div class="prophet"><small>남유다 · 요시야 시대</small><h3>훌다</h3><p>성전에서 발견된 율법책에 관해 하나님의 말씀을 전했습니다. (왕하 22장)</p></div>
+ </div>
+</section>
+
+<section id="events" class="section">
+ <div class="section-head"><div><h2>역사를 바꾼 주요 사건</h2><p>왕들의 통치와 선지자들의 사역을 연결하는 주요 장면입니다.</p></div></div>
+ <div class="event-list">
+  <div class="event"><time>약 BC 930</time><h3>왕국 분열</h3><p>르호보암과 여로보암 시대에 통일 왕국이 남유다와 북이스라엘로 분열합니다. (왕상 12장)</p></div>
+  <div class="event"><time>아합 시대</time><h3>갈멜산 대결</h3><p>엘리야가 바알 선지자들과 대결하며 여호와가 하나님이심을 선포합니다. (왕상 18장)</p></div>
+  <div class="event"><time>예후 즉위</time><h3>아합 왕조의 몰락</h3><p>예후가 기름 부음을 받고 아합의 집을 심판합니다. (왕하 9~10장)</p></div>
+  <div class="event"><time>약 BC 722</time><h3>북이스라엘 멸망</h3><p>앗수르가 사마리아를 함락하고 북이스라엘 백성을 포로로 끌고 갑니다. (왕하 17장)</p></div>
+  <div class="event"><time>히스기야 시대</time><h3>앗수르의 예루살렘 포위</h3><p>히스기야가 하나님께 기도하고 예루살렘은 앗수르의 공격에서 구원을 경험합니다. (왕하 18~19장)</p></div>
+  <div class="event"><time>요시야 시대</time><h3>율법책 발견과 개혁</h3><p>성전 수리 중 율법책이 발견되고 요시야가 언약을 갱신합니다. (왕하 22~23장)</p></div>
+  <div class="event"><time>약 BC 605–597</time><h3>바벨론의 유다 침공과 포로</h3><p>여러 차례 포로 이송이 진행되고 여호야긴도 바벨론으로 끌려갑니다. (왕하 24장)</p></div>
+  <div class="event"><time>약 BC 586</time><h3>예루살렘과 성전 파괴</h3><p>시드기야 시대에 바벨론이 예루살렘을 함락하고 성전을 파괴합니다. (왕하 25장)</p></div>
+ </div>
+</section>
+
+<footer> BIBLE TIMELINE · 성경 본문 학습을 위한 교육용 요약 자료 · 연대는 대표적인 역사 연대에 따른 개략값입니다.</footer>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-box"><div class="modal-head"><div><div id="modalKingdom" class="tag"></div><h2 id="modalTitle" style="margin:8px 0 0"></h2></div><button class="close" id="close" aria-label="닫기">×</button></div><div id="modalRating" style="margin-top:10px"></div><div class="detail-grid" id="modalDetails"></div><p id="modalDesc"></p><div class="refs" id="modalRefs"></div></div></div>
+
+<script>
+const kings = [
+{n:"르호보암",e:"Rehoboam",k:"judah",y:"17년",r:"악",d:"솔로몬의 아들로 왕국 분열 뒤 남유다의 첫 왕이 되었습니다. 강압적인 답변으로 북쪽 지파들의 이탈을 초래했습니다.",end:"자연사",ref:"열왕기상 12, 14장"},
+{n:"아비얌(아비야)",e:"Abijam / Abijah",k:"judah",y:"3년",r:"악",d:"르호보암의 아들입니다. 여로보암과 전쟁을 벌였으며 열왕기는 그의 마음이 온전하지 않았다고 평가합니다.",end:"자연사",ref:"열왕기상 15:1–8"},
+{n:"아사",e:"Asa",k:"judah",y:"41년",r:"선",d:"우상과 남색하는 자들을 제거하고 종교 개혁을 추진했습니다. 말년에는 발에 병이 들었습니다.",end:"발 질환을 앓은 뒤 죽음",ref:"열왕기상 15:9–24; 역대하 14–16장"},
+{n:"여호사밧",e:"Jehoshaphat",k:"judah",y:"25년",r:"부분",d:"아사의 아들입니다. 하나님을 찾고 율법 교육을 장려했지만 아합 가문과 혼인·정치 동맹을 맺었습니다.",end:"자연사",ref:"열왕기상 22:41–50; 역대하 17–20장"},
+{n:"여호람",e:"Jehoram",k:"judah",y:"8년",r:"악",d:"여호사밧의 아들입니다. 아합의 딸 아달랴와 결혼했고 형제들을 죽이는 등 악을 행했습니다.",end:"심한 장 질환으로 죽음",ref:"열왕기하 8:16–24; 역대하 21장"},
+{n:"아하시야",e:"Ahaziah",k:"judah",y:"1년",r:"악",d:"여호람과 아달랴의 아들입니다. 어머니와 아합 가문의 영향을 받아 악을 행했습니다.",end:"예후의 숙청 과정에서 살해",ref:"열왕기하 8:25–29; 9:27–29"},
+{n:"아달랴",e:"Athaliah",k:"judah",y:"6년",r:"악",d:"아합과 이세벨의 딸이자 남유다 왕비였습니다. 아들 아하시야가 죽은 뒤 왕족을 죽이고 왕위를 차지했으나 요아스가 살아남았습니다.",end:"여호야다의 명령으로 처형",ref:"열왕기하 11장; 역대하 22–23장"},
+{n:"요아스",e:"Joash / Jehoash",k:"judah",y:"40년",r:"부분",d:"아달랴의 학살에서 살아남아 제사장 여호야다의 도움으로 왕이 되었습니다. 성전을 수리했으나 여호야다 사후 우상숭배에 빠졌습니다.",end:"신하들에게 암살",ref:"열왕기하 11–12장; 역대하 24장"},
+{n:"아마샤",e:"Amaziah",k:"judah",y:"29년",r:"부분",d:"요아스의 아들입니다. 에돔과의 전쟁에서 승리했지만 에돔의 신들을 가져와 섬겼고 북이스라엘과 전쟁해 패했습니다.",end:"라기스에서 암살",ref:"열왕기하 14:1–20; 역대하 25장"},
+{n:"웃시야(아사랴)",e:"Uzziah / Azariah",k:"judah",y:"52년",r:"부분",d:"아마샤의 아들입니다. 군사·농업·건축을 발전시켰으나 교만해져 제사장만 할 수 있는 분향을 하려다 나병에 걸렸습니다.",end:"나병으로 별궁에서 격리 생활 후 죽음",ref:"열왕기하 15:1–7; 역대하 26장"},
+{n:"요담",e:"Jotham",k:"judah",y:"16년",r:"부분",d:"웃시야의 아들입니다. 성전 윗문을 건축하고 여러 성읍을 세웠으나 백성은 계속 부패했습니다.",end:"자연사",ref:"열왕기하 15:32–38; 역대하 27장"},
+{n:"아하스",e:"Ahaz",k:"judah",y:"16년",r:"악",d:"요담의 아들입니다. 우상숭배와 이방 제의를 행하고 앗수르에 도움을 요청했습니다.",end:"죽어 다윗 성에 장사되었으나 왕들의 묘실에는 들지 못함",ref:"열왕기하 16장; 역대하 28장"},
+{n:"히스기야",e:"Hezekiah",k:"judah",y:"29년",r:"선",d:"아하스의 아들입니다. 산당과 우상을 제거하고 유월절을 회복했습니다. 앗수르의 예루살렘 포위 때 하나님께 기도했습니다.",end:"자연사",ref:"열왕기하 18–20장; 역대하 29–32장"},
+{n:"므낫세",e:"Manasseh",k:"judah",y:"55년",r:"악",d:"히스기야의 아들입니다. 우상숭배와 폭력으로 유다를 타락시켰습니다. 역대하는 포로로 끌려간 뒤 겸비하고 회개했다고 기록합니다.",end:"자연사",ref:"열왕기하 21:1–18; 역대하 33장"},
+{n:"아몬",e:"Amon",k:"judah",y:"2년",r:"악",d:"므낫세의 아들입니다. 아버지의 악행을 따르고 우상을 섬겼습니다.",end:"궁중 신하들에게 암살",ref:"열왕기하 21:19–26; 역대하 33:21–25"},
+{n:"요시야",e:"Josiah",k:"judah",y:"31년",r:"선",d:"아몬의 아들입니다. 성전에서 율법책을 발견한 뒤 언약을 갱신하고 대대적인 종교 개혁을 단행했습니다.",end:"므깃도에서 바로 느고의 군대와 싸우다 치명상을 입고 죽음",ref:"열왕기하 22–23장; 역대하 34–35장"},
+{n:"여호아하스",e:"Jehoahaz",k:"judah",y:"3개월",r:"악",d:"요시야의 아들입니다. 바로 느고에게 폐위되어 애굽으로 끌려갔고 그곳에서 죽었습니다.",end:"애굽에서 사망",ref:"열왕기하 23:31–34; 역대하 36:1–4"},
+{n:"여호야김",e:"Jehoiakim",k:"judah",y:"11년",r:"악",d:"요시야의 아들입니다. 애굽의 영향 아래 왕이 되었고 이후 바벨론에 반기를 들었습니다. 예레미야의 두루마리를 불태웠습니다.",end:"죽음의 정확한 경위는 본문에 명확히 기록되지 않음",ref:"열왕기하 23:34–24:7; 예레미야 36장"},
+{n:"여호야긴",e:"Jehoiachin",k:"judah",y:"3개월 10일",r:"악",d:"여호야김의 아들입니다. 바벨론에 항복하고 왕족·기술자들과 함께 포로로 끌려갔습니다. 훗날 바벨론에서 석방되어 왕의 식탁에서 지냈습니다.",end:"포로 생활 후 생존",ref:"열왕기하 24:8–17; 25:27–30"},
+{n:"시드기야",e:"Zedekiah",k:"judah",y:"11년",r:"악",d:"요시야의 아들이자 여호야긴의 삼촌입니다. 느부갓네살이 맛다니야라는 이름을 시드기야로 바꾸고 왕으로 세웠습니다. 바벨론에 반기를 들었습니다.",end:"아들들이 죽임당하는 것을 본 뒤 눈이 뽑혀 바벨론으로 끌려감",ref:"열왕기하 24:17–25:7"},
+{n:"여로보암 1세",e:"Jeroboam I",k:"israel",y:"22년",r:"악",d:"북이스라엘의 첫 왕입니다. 백성이 예루살렘 성전에 가지 못하도록 벧엘과 단에 금송아지를 세우고 제사 체계를 만들었습니다.",end:"자연사",ref:"열왕기상 11:26–14:20"},
+{n:"나답",e:"Nadab",k:"israel",y:"2년",r:"악",d:"여로보암 1세의 아들입니다. 아버지의 죄를 따랐으며 블레셋 땅에서 바아사에게 암살당했습니다.",end:"바아사에게 암살",ref:"열왕기상 15:25–31"},
+{n:"바아사",e:"Baasha",k:"israel",y:"24년",r:"악",d:"나답을 죽이고 왕이 되어 여로보암 왕가를 제거했습니다. 그러나 여로보암의 죄를 그대로 따랐습니다.",end:"자연사",ref:"열왕기상 15:32–16:7"},
+{n:"엘라",e:"Elah",k:"israel",y:"2년",r:"악",d:"바아사의 아들입니다. 디르사에서 신하 시므리가 반역했을 때 술에 취해 있다가 살해됐습니다.",end:"시므리에게 암살",ref:"열왕기상 16:8–14"},
+{n:"시므리",e:"Zimri",k:"israel",y:"7일",r:"악",d:"엘라를 죽이고 왕이 되었지만 군대가 오므리를 왕으로 세우자 궁에 들어가 불을 지르고 죽었습니다.",end:"궁궐에 불을 지르고 자살",ref:"열왕기상 16:15–20"},
+{n:"오므리",e:"Omri",k:"israel",y:"12년",r:"악",d:"군사적 경쟁 끝에 왕권을 장악하고 사마리아 산을 사서 수도를 세웠습니다. 열왕기는 그가 이전 왕들보다 더 악했다고 평가합니다.",end:"자연사",ref:"열왕기상 16:21–28"},
+{n:"아합",e:"Ahab",k:"israel",y:"22년",r:"악",d:"오므리의 아들로 이세벨과 결혼하고 바알 숭배를 장려했습니다. 엘리야와 대립했으며 나봇의 포도원 사건에도 책임이 있습니다.",end:"아람과의 전투에서 화살에 맞아 사망",ref:"열왕기상 16:29–22:40"},
+{n:"아하시야",e:"Ahaziah",k:"israel",y:"2년",r:"악",d:"아합과 이세벨의 아들입니다. 다락 난간에서 떨어져 다친 뒤 에그론의 바알세붑에게 자신의 회복 여부를 물었습니다.",end:"부상 후 죽음; 아들이 없어 동생 여호람이 왕위 계승",ref:"열왕기상 22:51–53; 열왕기하 1장"},
+{n:"여호람(요람)",e:"Jehoram / Joram",k:"israel",y:"12년",r:"악",d:"아합의 아들입니다. 바알 주상을 제거했지만 여로보암의 죄는 떠나지 않았습니다. 예후의 반란으로 살해됐습니다.",end:"예후에게 살해",ref:"열왕기하 3장; 9:14–26"},
+{n:"예후",e:"Jehu",k:"israel",y:"28년",r:"혼합",d:"엘리사의 제자가 기름을 부어 왕으로 세웠습니다. 아합 왕가를 심판하고 바알 숭배를 제거했지만 벧엘과 단의 금송아지는 버리지 않았습니다.",end:"자연사",ref:"열왕기하 9–10장"},
+{n:"여호아하스",e:"Jehoahaz",k:"israel",y:"17년",r:"악",d:"예후의 아들입니다. 아람의 압박을 받았고 군사력이 크게 약화됐습니다. 하나님께 간구하자 구원자를 주셨다는 기록이 있습니다.",end:"자연사",ref:"열왕기하 13:1–9"},
+{n:"요아스(여호아스)",e:"Joash / Jehoash",k:"israel",y:"16년",r:"악",d:"여호아하스의 아들입니다. 엘리사가 죽기 전 찾아와 활과 화살로 아람에 대한 승리의 예언을 들었습니다.",end:"자연사",ref:"열왕기하 13:10–25"},
+{n:"여로보암 2세",e:"Jeroboam II",k:"israel",y:"41년",r:"악",d:"요아스의 아들입니다. 영토를 회복하고 번영을 누렸지만 여로보암 1세의 죄를 떠나지 않았습니다. 아모스와 호세아의 활동 시대와 연결됩니다.",end:"자연사",ref:"열왕기하 14:23–29; 아모스·호세아"},
+{n:"스가랴",e:"Zechariah",k:"israel",y:"6개월",r:"악",d:"여로보암 2세의 아들로 예후 왕조의 마지막 왕입니다. 살룸에게 공개적으로 암살됐습니다.",end:"살룸에게 암살",ref:"열왕기하 15:8–12"},
+{n:"살룸",e:"Shallum",k:"israel",y:"1개월",r:"악",d:"스가랴를 암살하고 왕이 되었지만 므나헴에게 살해됐습니다.",end:"므나헴에게 암살",ref:"열왕기하 15:13–15"},
+{n:"므나헴",e:"Menahem",k:"israel",y:"10년",r:"악",d:"살룸을 죽이고 왕이 됐습니다. 앗수르 왕 불에게 은 천 달란트를 바쳐 왕권을 유지했습니다.",end:"자연사",ref:"열왕기하 15:16–22"},
+{n:"브가히야",e:"Pekahiah",k:"israel",y:"2년",r:"악",d:"므나헴의 아들입니다. 군대 장관 베가가 반역해 왕궁에서 살해했습니다.",end:"베가에게 암살",ref:"열왕기하 15:23–26"},
+{n:"베가",e:"Pekah",k:"israel",y:"20년*",r:"악",d:"브가히야를 죽이고 왕이 됐습니다. 앗수르가 북이스라엘 영토를 빼앗고 주민들을 포로로 끌고 갔습니다.",end:"호세아의 반역으로 살해",ref:"열왕기하 15:27–31"},
+{n:"호세아",e:"Hoshea",k:"israel",y:"9년",r:"악",d:"북이스라엘의 마지막 왕입니다. 앗수르에 조공을 바치다가 애굽과 접촉하고 반역을 시도해 체포됐습니다. 사마리아가 함락되며 왕국이 끝났습니다.",end:"앗수르에 체포; 이후 최후는 명확히 기록되지 않음",ref:"열왕기하 17장"}
+];
+
+const status = r => r==="선" ? '<span class="tag good">하나님 보시기에 선함</span>' : r==="부분" ? '<span class="tag mixed">부분적 평가</span>' : r==="혼합" ? '<span class="tag mixed">혼합 평가</span>' : '<span class="tag bad">하나님 보시기에 악함</span>';
+let activeFilter="all";
+function renderKings(){
+ const q=(document.getElementById('search')?.value||'').toLowerCase();
+ const list=kings.filter(x=>{
+  const filter=activeFilter==="all" || x.k===activeFilter || (activeFilter==="good" && x.r==="선") || (activeFilter==="bad" && x.r==="악");
+  return filter && (x.n+x.e+x.d+x.end+x.ref).toLowerCase().includes(q);
+ });
+ document.getElementById('kingGrid').innerHTML=list.map((x,i)=>`<article class="king-card" data-name="${x.n}" tabindex="0" role="button" aria-label="${x.n} 상세 보기">
+ <div class="card-top"><span class="tag ${x.k==='judah'?'judah-tag':'israel-tag'}">${x.k==='judah'?'남유다':'북이스라엘'}</span>${status(x.r)}</div>
+ <h3>${x.n}</h3><div class="meta">${x.e} · 재위 ${x.y}</div><p>${x.d}</p>
+ <div class="card-foot"><span>최후: ${x.end}</span><b>상세 보기 ↗</b></div></article>`).join('') || '<p>검색 결과가 없습니다.</p>';
+ document.querySelectorAll('.king-card').forEach(el=>{el.addEventListener('click',()=>openKing(el.dataset.name));el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openKing(el.dataset.name)}})});
+}
+function openKing(name){
+ const x=kings.find(a=>a.n===name); if(!x)return;
+ document.getElementById('modalKingdom').className='tag '+(x.k==='judah'?'judah-tag':'israel-tag');
+ document.getElementById('modalKingdom').textContent=x.k==='judah'?'남유다':'북이스라엘';
+ document.getElementById('modalTitle').textContent=x.n+' · '+x.e;
+ document.getElementById('modalRating').innerHTML=status(x.r);
+ document.getElementById('modalDetails').innerHTML=`<div class="detail"><small>재위 기간</small><b>${x.y}</b></div><div class="detail"><small>왕국</small><b>${x.k==='judah'?'남유다':'북이스라엘'}</b></div><div class="detail"><small>최후</small><b>${x.end}</b></div><div class="detail"><small>성경 본문</small><b>${x.ref}</b></div>`;
+ document.getElementById('modalDesc').textContent=x.d;
+ document.getElementById('modalRefs').textContent='본문을 직접 읽으며 확인해 보세요. 재위 기간 및 일부 연대는 공동 통치와 연대 계산 방식에 따라 차이가 있을 수 있습니다.';
+ document.getElementById('modal').classList.add('show');
+}
+document.getElementById('close').onclick=()=>document.getElementById('modal').classList.remove('show');
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')e.currentTarget.classList.remove('show')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('modal').classList.remove('show')});
+document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>{document.querySelectorAll('.navbtn').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id===b.dataset.tab))});
+document.querySelectorAll('.filterbtn').forEach(b=>b.onclick=()=>{activeFilter=b.dataset.filter;document.querySelectorAll('.filterbtn').forEach(x=>x.classList.toggle('active',x===b));renderKings()});
+document.getElementById('search').addEventListener('input',renderKings);
+renderKings();
+
+
+// Approximate reign ranges (BC). Dates are intentionally presented as estimates,
+// not exact durations; overlapping bars can represent co-regency or disputed chronology.
+const rulerMin=586, rulerMax=930, rulerSpan=rulerMax-rulerMin;
+const reigns={
+judah:[
+["르호보암",930,913],["아비얌",913,910],["아사",910,869],["여호사밧",872,848],
+["여호람",848,841],["아하시야",841,840],["아달랴",841,835],["요아스",835,796],
+["아마샤",796,767],["웃시야",792,740],["요담",750,732],["아하스",735,715],
+["히스기야",715,686],["므낫세",697,642],["아몬",642,640],["요시야",640,609],
+["여호아하스",609,609],["여호야김",609,598],["여호야긴",598,597],["시드기야",597,586]
+],
+israel:[
+["여로보암 1세",930,909],["나답",909,908],["바아사",908,886],["엘라",886,885],
+["시므리",885,885],["오므리",885,874],["아합",874,853],["아하시야",853,852],
+["여호람",852,841],["예후",841,814],["여호아하스",814,798],["요아스",798,782],
+["여로보암 2세",793,753],["스가랴",753,752],["살룸",752,752],["므나헴",752,742],
+["브가히야",742,740],["베가",752,732],["호세아",732,722]
+]
+};
+const prophets=[
+["엘리야",875,850],["엘리사",850,800],["아모스",765,750],["호세아",755,725],
+["이사야",740,680],["미가",735,700],["예레미야",627,580],["훌다",640,609]
+];
+function rulerX(bc){return ((rulerMax-bc)/rulerSpan)*100}
+function rulerW(start,end){return Math.max(((start-end)/rulerSpan)*100,0.6)}
+function kingRecord(name,key){return kings.find(k=>k.k===key && (k.n===name || k.n.startsWith(name)))}
+function makeKingRows(key){
+ const names=reigns[key];
+ return names.map((r,i)=>{
+  const [name,start,end]=r, rec=kingRecord(name,key);
+  const left=rulerX(start), width=rulerW(start,end);
+  const title=`${name} · 약 BC ${start}–${end} · ${rec?rec.y+' 통치':''}`;
+  return `<div class="king-row"><div class="king-label">${name}</div><div class="king-track"><button class="king-bar ${key==='judah'?'j':'i'}" style="left:${left}%;width:${width}%" title="${title}" aria-label="${title}" ${rec?`data-king="${rec.n}"`:''}>${name}</button></div></div>`;
+ }).join('');
+}
+const ticks=[930,900,870,840,810,780,750,720,690,660,630,600,586];
+const axis=`<div class="ruler-axis"><div class="axis-label">왕 / BC 연도</div><div class="axis-track">${ticks.map(y=>`<span class="axis-tick" style="left:${rulerX(y)}%">${y}</span>`).join('')}</div></div>`;
+const chart=document.getElementById('rulerChart');
+chart.innerHTML=axis+
+`<div class="kingdom-band"><div class="band-title j">남유다 · 다윗 왕조</div><div></div></div>`+makeKingRows('judah')+
+`<div class="kingdom-band"><div class="band-title i">북이스라엘 · 여러 왕조</div><div></div></div>`+makeKingRows('israel')+
+`<div class="prophet-band"><div class="band-title">선지자 활동 시기</div><div></div></div>`+
+prophets.map(p=>`<div class="prophet-row"><div class="king-label">${p[0]}</div><div class="prophet-track"><span class="prophet-bar" style="left:${rulerX(p[1])}%;width:${rulerW(p[1],p[2])}%" title="${p[0]} · 약 BC ${p[1]}–${p[2]}">${p[0]}</span></div></div>`).join('');
+chart.querySelectorAll('[data-king]').forEach(btn=>btn.addEventListener('click',()=>openKing(btn.dataset.king)));
+</script>
+</body>
+</html>
