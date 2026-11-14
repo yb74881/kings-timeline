@@ -63,6 +63,29 @@ footer{margin:28px 0 8px;color:#8791a2;font-size:11px;text-align:center}
 .power-filters{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
 @media(max-width:650px){.power-grid{grid-template-columns:1fr}}
 
+
+.timeline-scroll{position:relative;touch-action:pan-y}
+.ruler-chart{position:relative}
+.timeline-crosshair{position:absolute;top:0;bottom:0;width:2px;background:#d39b36;z-index:8;pointer-events:none;box-shadow:0 0 0 1px #ffffff80}
+.timeline-crosshair:before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:#d39b36;border:2px solid white;box-shadow:0 1px 5px #17243b40}
+
+.timeline-hovercard{position:absolute;z-index:30;width:290px;max-width:calc(100vw - 48px);padding:12px 14px;background:rgba(255,255,255,.97);border:1px solid #dce3ef;border-radius:13px;box-shadow:0 10px 28px rgba(24,39,75,.18);pointer-events:none;color:#1c2940;backdrop-filter:blur(8px)}
+.timeline-hovercard .hover-year{font-size:18px;font-weight:900;margin-bottom:8px;color:#1c2940}
+.timeline-hovercard .hover-row{font-size:11px;line-height:1.5;margin-top:5px}
+.timeline-hovercard .hover-row span{display:block;font-size:9px;font-weight:800;color:#8490a5;margin-bottom:1px}
+.timeline-hovercard .hover-event{border-top:1px solid #e8edf4;margin-top:8px;padding-top:7px;font-size:10px;line-height:1.45;color:#56647c}
+.timeline-hovercard[hidden]{display:none}
+
+.timeline-readout{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:start;margin-top:14px;padding:15px 16px;border:1px solid #e1e6ef;border-radius:14px;background:#f8faff}
+.readout-date{font-size:18px;font-weight:900;color:#1c2940}
+.readout-hint{font-size:12px;color:#758198;line-height:1.6}
+.readout-columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;grid-column:1/-1}
+.readout-item{background:white;border:1px solid #e7ebf2;border-radius:10px;padding:10px 12px;min-width:0}
+.readout-item small{display:block;font-size:10px;color:#788398;margin-bottom:5px;font-weight:800}
+.readout-item b{display:block;font-size:13px;color:#202b40}
+.readout-event{grid-column:1/-1;font-size:12px;line-height:1.55;color:#59667d;padding-top:2px}
+@media(max-width:650px){.timeline-readout{grid-template-columns:1fr}.readout-columns{grid-template-columns:1fr}.readout-date{font-size:16px}}
+
 @media(max-width:850px){.king-grid{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(2,1fr)}.prophets{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.shell{padding:13px}header{padding:23px 20px}.split,.event-list{grid-template-columns:1fr}.king-grid{grid-template-columns:1fr}.prophets{grid-template-columns:1fr}.section-head{display:block}.timeline{grid-template-columns:1fr;gap:4px}.track{min-height:43px}.detail-grid{grid-template-columns:1fr 1fr}}
 </style>
@@ -122,7 +145,7 @@ footer{margin:28px 0 8px;color:#8791a2;font-size:11px;text-align:center}
  <div class="section-head"><div><h2>두 왕국의 동시대 타임라인</h2><p>왕들의 재위 기간을 하나의 BC 시간축에 겹쳐 표시합니다. 막대를 선택하면 왕의 상세 정보가 열립니다.</p></div></div>
  <div class="panel timeline-panel">
   <div class="legend"><span class="tag judah-tag">남유다</span><span class="tag israel-tag">북이스라엘</span><span class="tag" style="background:#f2eaff;color:#7041a6">선지자 활동 시기</span></div>
-  <div class="timeline-scroll">
+  <div class="timeline-scroll" id="timelineScroll">
    <div id="rulerChart" class="ruler-chart" aria-label="남유다와 북이스라엘 왕들의 재위 타임라인"></div>
   </div>
   <p style="font-size:12px;color:#788398;margin:15px 0 0">※ 연대는 대표적인 역사 연대에 따른 개략값입니다. 공동 통치, 즉위 연도 계산법, 경쟁 왕권 및 학자별 연대 체계에 따라 차이가 있습니다. 특히 북이스라엘 말기와 남유다의 공동 통치 구간은 막대가 겹칠 수 있습니다.</p>
@@ -340,6 +363,80 @@ chart.innerHTML=axis+
 `<div class="kingdom-band"><div class="band-title i">북이스라엘 · 여러 왕조</div><div></div></div>`+makeKingRows('israel')+
 `<div class="prophet-band"><div class="band-title">선지자 활동 시기</div><div></div></div>`+
 prophets.map(p=>`<div class="prophet-row"><div class="king-label">${p[0]}</div><div class="prophet-track"><span class="prophet-bar" style="left:${rulerX(p[1])}%;width:${rulerW(p[1],p[2])}%" title="${p[0]} · 약 BC ${p[1]}–${p[2]}">${p[0]}</span></div></div>`).join('');
+
+// Stock-chart-style crosshair: hover or drag across the timeline to inspect the era.
+
+const timelineScroll=document.getElementById('timelineScroll');
+const crosshair=document.createElement('div');
+crosshair.className='timeline-crosshair';
+crosshair.style.display='none';
+chart.appendChild(crosshair);
+
+const hovercard=document.createElement('div');
+hovercard.className='timeline-hovercard';
+hovercard.hidden=true;
+chart.appendChild(hovercard);
+
+const eraEvents=[
+ {year:853,title:"아합과 여호사밧 시대 · 아람과의 전쟁",ref:"열왕기상 22장"},
+ {year:850,title:"엘리야의 사역 후반기와 엘리사의 사역 시작 무렵",ref:"열왕기상 19장; 열왕기하 2장"},
+ {year:841,title:"예후의 반란과 아합 왕조의 몰락",ref:"열왕기하 9–10장"},
+ {year:722,title:"북이스라엘 멸망과 사마리아 함락",ref:"열왕기하 17장"},
+ {year:701,title:"히스기야 시대, 앗수르의 예루살렘 침공",ref:"열왕기하 18–19장"},
+ {year:586,title:"예루살렘 함락과 남유다 왕국의 종말",ref:"열왕기하 25장"}
+];
+function activeInRange(start,end,year){return year<=start && year>=end}
+function namesAt(year,group){
+ return reigns[group].filter(r=>activeInRange(r[1],r[2],year)).map(r=>r[0]);
+}
+function prophetsAt(year){
+ return prophets.filter(p=>activeInRange(p[1],p[2],year)).map(p=>p[0]);
+}
+function updateEra(clientX,clientY){
+ const axis=chart.querySelector('.axis-track');
+ const rect=axis.getBoundingClientRect();
+ const x=Math.max(0,Math.min(rect.width,clientX-rect.left));
+ const ratio=rect.width ? x/rect.width : 0;
+ const year=Math.round(rulerMax-ratio*rulerSpan);
+ const chartRect=chart.getBoundingClientRect();
+ const localX=clientX-chartRect.left;
+ const localY=clientY-chartRect.top;
+ crosshair.style.display='block';
+ crosshair.style.left=(170+x)+'px';
+
+ const judah=namesAt(year,'judah');
+ const israel=namesAt(year,'israel');
+ const activeProphets=prophetsAt(year);
+ const nearby=eraEvents.filter(e=>Math.abs(e.year-year)<=3).sort((a,b)=>Math.abs(a.year-year)-Math.abs(b.year-year))[0];
+ const fmt=(arr)=>arr.length?arr.join(' · '):'해당 연대 정보 없음';
+ hovercard.innerHTML=`
+  <div class="hover-year">BC ${year}년</div>
+  <div class="hover-row"><span>남유다 왕국</span><b>${fmt(judah)}</b></div>
+  <div class="hover-row"><span>북이스라엘 왕국</span><b>${fmt(israel)}</b></div>
+  <div class="hover-row"><span>활동 중인 선지자</span><b>${fmt(activeProphets)}</b></div>
+  <div class="hover-event">${nearby?`<strong>주요 사건:</strong> ${nearby.title} · ${nearby.ref}`:'이 연도에 연결된 대표 사건 데이터는 아직 없습니다.'}</div>`;
+ hovercard.hidden=false;
+
+ // Keep the information card beside the pointer without letting it spill outside the chart.
+ const cardW=Math.min(290,Math.max(220,chart.clientWidth-20));
+ const cardH=hovercard.offsetHeight||180;
+ let left=localX+18;
+ if(left+cardW>chart.clientWidth-8) left=localX-cardW-18;
+ left=Math.max(8,Math.min(left,chart.clientWidth-cardW-8));
+ let top=localY+18;
+ if(top+cardH>chart.clientHeight-8) top=localY-cardH-18;
+ top=Math.max(8,Math.min(top,chart.clientHeight-cardH-8));
+ hovercard.style.left=left+'px';
+ hovercard.style.top=top+'px';
+}
+timelineScroll.addEventListener('pointermove',e=>{
+ const axis=chart.querySelector('.axis-track');
+ const rect=axis.getBoundingClientRect();
+ if(e.clientX<rect.left || e.clientX>rect.right){crosshair.style.display='none';return}
+ updateEra(e.clientX,e.clientY);
+});
+timelineScroll.addEventListener('pointerleave',()=>{crosshair.style.display='none';hovercard.hidden=true});
+
 chart.querySelectorAll('[data-king]').forEach(btn=>btn.addEventListener('click',()=>openKing(btn.dataset.king)));
 
 const powerEvents=[
