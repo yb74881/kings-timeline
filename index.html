@@ -49,6 +49,20 @@ footer{margin:28px 0 8px;color:#8791a2;font-size:11px;text-align:center}
 .prophet-bar{position:absolute;top:4px;height:19px;border-radius:5px;background:#8c64b5;color:white;font-size:10px;font-weight:800;padding:1px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media(max-width:600px){.timeline-panel{padding:12px}.ruler-chart{min-width:900px}}
 
+
+.power-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.power-card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:16px}
+.power-card h3{margin:0 0 10px;font-size:15px}
+.power-flow{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.power-person{background:#f4f6fa;border:1px solid #e3e8f0;border-radius:10px;padding:9px 11px;min-width:110px}
+.power-person b{display:block;font-size:13px}.power-person small{font-size:10px;color:var(--muted)}
+.power-arrow{display:flex;flex-direction:column;align-items:center;gap:2px;color:#b43c48;font-size:11px;font-weight:800}
+.power-arrow .arrow{font-size:20px;line-height:1}
+.power-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.power-note{font-size:12px;color:#647188;margin:10px 0 0}
+.power-filters{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+@media(max-width:650px){.power-grid{grid-template-columns:1fr}}
+
 @media(max-width:850px){.king-grid{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(2,1fr)}.prophets{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.shell{padding:13px}header{padding:23px 20px}.split,.event-list{grid-template-columns:1fr}.king-grid{grid-template-columns:1fr}.prophets{grid-template-columns:1fr}.section-head{display:block}.timeline{grid-template-columns:1fr;gap:4px}.track{min-height:43px}.detail-grid{grid-template-columns:1fr 1fr}}
 </style>
@@ -69,6 +83,7 @@ footer{margin:28px 0 8px;color:#8791a2;font-size:11px;text-align:center}
  <button class="navbtn" data-tab="genealogy">왕조 계보</button>
  <button class="navbtn" data-tab="prophets">선지자</button>
  <button class="navbtn" data-tab="events">역사적 사건</button>
+ <button class="navbtn" data-tab="power">암살과 권력 교체</button>
 </nav>
 
 <section id="overview" class="section active">
@@ -175,6 +190,28 @@ footer{margin:28px 0 8px;color:#8791a2;font-size:11px;text-align:center}
   <div class="event"><time>요시야 시대</time><h3>율법책 발견과 개혁</h3><p>성전 수리 중 율법책이 발견되고 요시야가 언약을 갱신합니다. (왕하 22~23장)</p></div>
   <div class="event"><time>약 BC 605–597</time><h3>바벨론의 유다 침공과 포로</h3><p>여러 차례 포로 이송이 진행되고 여호야긴도 바벨론으로 끌려갑니다. (왕하 24장)</p></div>
   <div class="event"><time>약 BC 586</time><h3>예루살렘과 성전 파괴</h3><p>시드기야 시대에 바벨론이 예루살렘을 함락하고 성전을 파괴합니다. (왕하 25장)</p></div>
+ </div>
+</section>
+
+
+<section id="power" class="section">
+ <div class="section-head"><div><h2>암살과 권력 교체</h2><p>왕위가 폭력으로 바뀐 사건을 가해자, 피해자, 사건 유형, 성경 본문으로 연결합니다.</p></div></div>
+ <div class="panel">
+  <h3>관계도 읽는 법</h3>
+  <div class="legend"><span class="tag" style="background:#fde9e9;color:#ae333c">살해·암살</span><span class="tag mixed">반역·쿠데타</span><span class="tag neutral">전투 중 사망</span><span class="tag good">성경 본문에 명시</span></div>
+  <p style="font-size:13px;color:#667188;margin:0">화살표는 왕위 계승이 아니라 해당 인물의 죽음에 직접 관여한 것으로 성경 본문이 기록한 관계를 나타냅니다. 직접 살해, 명령에 따른 처형, 전투 중 사망을 구분하며, 책임 소재가 본문에 분명하지 않으면 추정하지 않습니다.</p>
+ </div>
+ <div class="controls power-filters">
+  <button class="filterbtn active" data-power-filter="all">전체</button>
+  <button class="filterbtn" data-power-filter="assassination">암살·살해</button>
+  <button class="filterbtn" data-power-filter="coup">반역·쿠데타</button>
+  <button class="filterbtn" data-power-filter="battle">전투·전쟁</button>
+  <button class="filterbtn" data-power-filter="execution">처형·명령</button>
+ </div>
+ <div id="powerGrid" class="power-grid"></div>
+ <div class="panel" style="margin-top:14px">
+  <h3>주의해서 읽을 사건</h3>
+  <p style="font-size:13px;color:#667188;margin:0">아하시야(남유다)는 예후의 반란 과정에서 도주하다가 부상을 입고 므깃도에서 죽었습니다. 본문은 예후의 부하들이 그를 공격한 경위와 장소를 기록하지만, 세부 과정의 해석에는 차이가 있을 수 있습니다. 또한 요아스(남유다)는 신하들의 음모로 살해되었다고 기록되지만, 열왕기하 본문은 살해자 개인의 이름을 열거하지 않습니다.</p>
  </div>
 </section>
 
@@ -285,11 +322,11 @@ const prophets=[
 ];
 function rulerX(bc){return ((rulerMax-bc)/rulerSpan)*100}
 function rulerW(start,end){return Math.max(((start-end)/rulerSpan)*100,0.6)}
-function kingRecord(name,key){return kings.find(k=>k.k===key && (k.n===name || k.n.startsWith(name)))}
+function kingRecord(name){return kings.find(k=>k.n===name || k.n.startsWith(name))}
 function makeKingRows(key){
  const names=reigns[key];
  return names.map((r,i)=>{
-  const [name,start,end]=r, rec=kingRecord(name,key);
+  const [name,start,end]=r, rec=kingRecord(name);
   const left=rulerX(start), width=rulerW(start,end);
   const title=`${name} · 약 BC ${start}–${end} · ${rec?rec.y+' 통치':''}`;
   return `<div class="king-row"><div class="king-label">${name}</div><div class="king-track"><button class="king-bar ${key==='judah'?'j':'i'}" style="left:${left}%;width:${width}%" title="${title}" aria-label="${title}" ${rec?`data-king="${rec.n}"`:''}>${name}</button></div></div>`;
@@ -304,6 +341,37 @@ chart.innerHTML=axis+
 `<div class="prophet-band"><div class="band-title">선지자 활동 시기</div><div></div></div>`+
 prophets.map(p=>`<div class="prophet-row"><div class="king-label">${p[0]}</div><div class="prophet-track"><span class="prophet-bar" style="left:${rulerX(p[1])}%;width:${rulerW(p[1],p[2])}%" title="${p[0]} · 약 BC ${p[1]}–${p[2]}">${p[0]}</span></div></div>`).join('');
 chart.querySelectorAll('[data-king]').forEach(btn=>btn.addEventListener('click',()=>openKing(btn.dataset.king)));
+
+const powerEvents=[
+{type:"assassination",actor:"바아사",victim:"나답",kingdom:"북이스라엘",kind:"왕을 직접 살해하고 왕위 차지",ref:"열왕기상 15:27–29",note:"바아사가 나답을 쳐 죽이고 여로보암의 온 집을 멸했습니다."},
+{type:"assassination",actor:"시므리",victim:"엘라",kingdom:"북이스라엘",kind:"궁중 반역·암살",ref:"열왕기상 16:8–14",note:"엘라가 술에 취해 있을 때 시므리가 그를 죽이고 왕이 되었습니다."},
+{type:"coup",actor:"오므리의 군대",victim:"시므리",kingdom:"북이스라엘",kind:"포위 중 자살",ref:"열왕기상 16:15–20",note:"백성이 오므리를 왕으로 세우자 시므리는 왕궁에 불을 지르고 죽었습니다. 오므리가 직접 시므리를 죽였다고 본문이 말하지는 않습니다."},
+{type:"assassination",actor:"예후",victim:"여호람(요람)",kingdom:"북이스라엘",kind:"반란 중 직접 살해",ref:"열왕기하 9:14–26",note:"예후가 활을 쏘아 여호람을 죽였습니다."},
+{type:"battle",actor:"예후의 반란 세력",victim:"아하시야",kingdom:"남유다",kind:"도주 중 공격·부상 후 사망",ref:"열왕기하 9:27–29; 역대하 22:7–9",note:"아하시야는 예후의 반란 과정에서 공격을 받고 도주했으며 므깃도에서 죽었습니다. 본문별 서술을 함께 읽을 필요가 있습니다."},
+{type:"execution",actor:"예후의 부하들",victim:"이세벨",kingdom:"북이스라엘",kind:"예후의 명령에 따른 투척",ref:"열왕기하 9:30–37",note:"예후의 명령을 받은 내시들이 이세벨을 창밖으로 던졌습니다."},
+{type:"execution",actor:"예후의 명령을 받은 관리들",victim:"아합의 아들 70명",kingdom:"북이스라엘",kind:"명령에 따른 처형",ref:"열왕기하 10:1–11",note:"사마리아의 관리들이 예후의 편지를 받은 뒤 아합의 아들들을 죽였습니다. 개인 살해자 한 명으로 단순화하지 않습니다."},
+{type:"assassination",actor:"살룸",victim:"스가랴",kingdom:"북이스라엘",kind:"공개 암살",ref:"열왕기하 15:8–12",note:"살룸이 스가랴를 백성 앞에서 쳐 죽이고 왕이 되었습니다."},
+{type:"assassination",actor:"므나헴",victim:"살룸",kingdom:"북이스라엘",kind:"암살 후 왕위 차지",ref:"열왕기하 15:13–15",note:"므나헴이 살룸을 죽이고 왕이 되었습니다."},
+{type:"assassination",actor:"베가",victim:"브가히야",kingdom:"북이스라엘",kind:"궁중 암살",ref:"열왕기하 15:23–26",note:"베가가 길르앗 사람 50명과 함께 브가히야를 죽이고 왕이 되었습니다."},
+{type:"assassination",actor:"호세아",victim:"베가",kingdom:"북이스라엘",kind:"반역·살해 후 왕위 차지",ref:"열왕기하 15:27–31",note:"호세아가 베가를 반역하여 죽이고 왕이 되었습니다."},
+{type:"assassination",actor:"요아스의 신하들",victim:"요아스",kingdom:"남유다",kind:"궁중 음모·암살",ref:"열왕기하 12:20–21; 역대하 24:25–26",note:"신하들이 요아스를 모반하여 살해했습니다. 열왕기는 신하들의 이름을 구체적으로 적지 않습니다."},
+{type:"assassination",actor:"요아스의 신하들",victim:"아마샤",kingdom:"남유다",kind:"라기스에서 암살",ref:"열왕기하 14:19–20; 역대하 25:27–28",note:"예루살렘에서 모반이 일어나자 아마샤가 라기스로 도망했고, 사람들이 그곳에서 그를 죽였습니다."},
+{type:"battle",actor:"바로 느고의 군대",victim:"요시야",kingdom:"남유다",kind:"므깃도 전투에서 치명상",ref:"열왕기하 23:29–30; 역대하 35:20–24",note:"요시야는 바로 느고와 맞선 전투에서 활에 맞아 예루살렘으로 옮겨진 뒤 죽었습니다."},
+{type:"execution",actor:"바벨론 왕의 군대",victim:"시드기야의 아들들",kingdom:"남유다",kind:"시드기야 앞에서 처형",ref:"열왕기하 25:6–7",note:"시드기야의 아들들이 그의 눈앞에서 죽임을 당했고, 시드기야는 눈이 뽑혀 바벨론으로 끌려갔습니다."}
+];
+let activePowerFilter="all";
+function renderPower(){
+ const list=powerEvents.filter(e=>activePowerFilter==="all"||e.type===activePowerFilter);
+ const labels={assassination:"암살·살해",coup:"반역·쿠데타",battle:"전투·전쟁",execution:"처형·명령"};
+ document.getElementById('powerGrid').innerHTML=list.map(e=>`<article class="power-card">
+ <div class="card-top"><span class="tag ${e.kingdom==='남유다'?'judah-tag':'israel-tag'}">${e.kingdom}</span><span class="tag ${e.type==='assassination'||e.type==='execution'?'bad':e.type==='battle'?'neutral':'mixed'}">${labels[e.type]}</span></div>
+ <div class="power-flow" style="margin-top:12px"><div class="power-person"><b>${e.actor}</b><small>행위자 / 관련 세력</small></div><div class="power-arrow"><span class="arrow">→</span><span>${e.kind}</span></div><div class="power-person"><b>${e.victim}</b><small>피해자</small></div></div>
+ <p class="power-note">${e.note}</p><div class="power-meta"><span class="tag neutral">${e.ref}</span></div>
+ </article>`).join('');
+}
+document.querySelectorAll('[data-power-filter]').forEach(b=>b.addEventListener('click',()=>{activePowerFilter=b.dataset.powerFilter;document.querySelectorAll('[data-power-filter]').forEach(x=>x.classList.toggle('active',x===b));renderPower()}));
+renderPower();
+
 </script>
 </body>
 </html>
